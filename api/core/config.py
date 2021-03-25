@@ -5,8 +5,9 @@ class Settings(BaseSettings):
     SECRET_KEY: str = token_urlsafe(32)
     PROJECT_NAME: str
     ADMIN_EMAIL: str
-    DETA_PROJECT_KEY: str
-    DETA_DB: str
+    MONGODB_URL: str
+    MONGODB_NAME: str
+    MONGODB_COLLECTION: str
 
     class Config:
         env_file = '.env'

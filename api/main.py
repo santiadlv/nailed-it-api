@@ -1,10 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from deta import Deta
 from .core import config
-
-deta = Deta(config.settings.DETA_PROJECT_KEY)
-db = deta.Base(config.settings.DETA_DB)
 
 app = FastAPI(
     title=config.settings.PROJECT_NAME

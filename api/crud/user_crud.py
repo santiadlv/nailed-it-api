@@ -1,24 +1,27 @@
 from typing import Optional
-from deta import Deta
-from ..core import settings
+from fastapi import Request
 from fastapi.encoders import jsonable_encoder
 from ..models import user_model
 from ..core.security import get_password_hash
-
-deta = Deta(settings.DETA_PROJECT_KEY)
-db = deta.Base(settings.DETA_DB)
+from ..core import settings
 
 class CRUDUser():
-    def get_by_email(email: str) -> Optional[user_model.UserInDB]:
-        user = next(db.fetch({"email" : email}))
-        return user
+    async def get_by_email(request: Request, user_in: user_model.UserCreate) -> Optional[user_model.UserInDB]:
+        if (user := await request.app.mongodb[settings.MONGODB_COLLECTION].find_one({"email": user_in['email']})) is not None:
+            return user
+        else: return None
 
-    def create(obj_in: user_model.UserCreate) -> Optional[user_model.UserGet]:
+    async def get_by_id(request: Request, id: str) -> Optional[user_model.UserInDB]:
+        if (user := await request.app.mongodb[settings.MONGODB_COLLECTION].find_one({"_id": id})) is not None:
+            return user
+        else: return None
+
+    async def create(request: Request, obj_in: user_model.UserCreate) -> Optional[user_model.UserInDB]:
         new_user = user_model.UserInDB(
-            email=obj_in.email,
-            username=obj_in.username,
-            hashed_password=get_password_hash(obj_in.password),
+            email=obj_in['email'],
+            username=obj_in['username'],
+            hashed_password=get_password_hash(obj_in['password'])
         )
         serialized_user = jsonable_encoder(new_user)
-        db.put(serialized_user)
-        return new_user
+        new_user = await request.app.mongodb[settings.MONGODB_COLLECTION].insert_one(serialized_user)
+        return serialized_user

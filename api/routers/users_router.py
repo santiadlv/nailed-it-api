@@ -1,4 +1,6 @@
-from fastapi import APIRouter, status, Response
+from fastapi import APIRouter, Request, status
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 from ..models import user_model
 from ..services.user_service import UserService
 
@@ -8,9 +10,8 @@ router = APIRouter(
     responses={404: {"description" : "Not found"}}
 )
 
-@router.post("/signup", status_code=status.HTTP_201_CREATED, response_model=user_model.UserGet)
-async def create_user(user_in: user_model.UserCreate, response: Response):
-    created_user = UserService.create(user_in=user_in)
-    if not created_user:
-        response.status_code = status.HTTP_400_BAD_REQUEST
-    return create_user
+@router.post("/signup", status_code=status.HTTP_201_CREATED, response_description="Create new user", response_model=user_model.UserInDB)
+async def create_user(request: Request, user_in: user_model.UserCreate) -> JSONResponse:
+    user_in = jsonable_encoder(user_in)
+    new_user = await UserService.create(request, user_in)
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content={"messsage" : "User added successfully", "data" : new_user})

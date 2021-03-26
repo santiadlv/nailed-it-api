@@ -7,13 +7,19 @@ from .objectid_model import PyObjectId
 
 def password_strength_check(value: str) -> str:
         if len(value) < 8:
-            raise ValueError('Password ust be 8 characters or longer')
+            raise ValueError('Password must be 8 characters or longer')
         return value
 
 class UserBase(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias='_id')
     email: EmailStr = Field(...)
     username: str = Field(...)
+
+    @validator('username')
+    def check_name_not_empty(cls, value: str) -> str:
+        assert value != "", 'Empty strings are not allowed'
+        return value
+
     class Config:
         allow_population_by_field_name = True
         arbitrary_types_allowed = True

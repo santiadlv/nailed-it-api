@@ -33,6 +33,15 @@ class UserService():
         user = await CRUDUser.create(request, user_in)
         return user
 
+    async def update_password(request: Request, credentials: user_model.UserCredentials) -> Optional[user_model.UserInDB]:
+        updated_user = await CRUDUser.update(request, credentials)
+        if not updated_user:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Could not change password using provided token"
+            )
+        return updated_user
+
     async def login(request: Request, user_login: user_model.UserLogin) -> Optional[user_model.UserLogin]:
         existing_user = await CRUDUser.get_by_email(request, user_login)
         if existing_user: 

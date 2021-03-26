@@ -14,4 +14,4 @@ router = APIRouter(
 async def create_user(request: Request, user_in: user_model.UserCreate) -> JSONResponse:
     user_in = jsonable_encoder(user_in)
     new_user = await UserService.create(request, user_in)
-    return JSONResponse(status_code=status.HTTP_201_CREATED, content={"messsage" : "User added successfully", "data" : new_user})
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content={"message" : "User added successfully", "data" : new_user})

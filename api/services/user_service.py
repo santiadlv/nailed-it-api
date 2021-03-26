@@ -58,4 +58,22 @@ class UserService():
                 status_code=401,
                 detail=f"The user with email {user_login['email']} does not exists in the system."
             )
-            
+
+    async def delete(request: Request, user_info: user_model.UserLogin) -> Optional[user_model.UserLogin]:
+        existing_user = await CRUDUser.get_by_email(request, user_info)
+        print(user_info)
+        if existing_user:             
+            if security.authenticate(user_info['password'], existing_user['hashed_password']):
+                account_to_delete = await CRUDUser.delete(request, existing_user)
+                return account_to_delete
+            else:
+                raise HTTPException(
+                    status_code=401,
+                    detail=f"Incorrect password."
+                )
+        else:
+            raise HTTPException(
+                status_code=401,
+                detail=f"The user with email {user_info['email']} does not exists in the system."
+            )
+

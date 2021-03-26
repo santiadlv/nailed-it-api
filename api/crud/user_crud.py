@@ -25,3 +25,9 @@ class CRUDUser():
         serialized_user = jsonable_encoder(new_user)
         new_user = await request.app.mongodb[settings.MONGODB_COLLECTION].insert_one(serialized_user)
         return serialized_user
+
+    async def delete(request: Request, obj_in: user_model.UserLogin) -> Optional[user_model.UserLogin]:
+        if (result := await request.app.mongodb[settings.MONGODB_COLLECTION].find_one_and_delete({"email": obj_in['email']})) is not None:
+            serialized_user = jsonable_encoder(result)
+            return serialized_user
+        else: return None

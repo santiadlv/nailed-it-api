@@ -40,4 +40,9 @@ async def validate_user(request: Request, user_login: user_model.UserLogin) -> J
 async def delete_account(request: Request, user_info: user_model.UserLogin) -> JSONResponse:
     user_info = jsonable_encoder(user_info)
     remove_account = await UserService.delete(request, user_info)
+<<<<<<< HEAD
     return JSONResponse(status_code=status.HTTP_200_OK, content={"messsage" : "Account Deleted", "data" : remove_account})
+=======
+    # return remove_account
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"messsage" : "Account Deleted", "data" : remove_account})
+>>>>>>> develop

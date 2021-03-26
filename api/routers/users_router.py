@@ -21,7 +21,7 @@ async def get_reset_link(request: Request, user_in: user_model.UserBase) -> JSON
     user_in = jsonable_encoder(user_in)
     user_to_reset = await UserService.get_user_by_email(request, user_in)
     return JSONResponse(status_code=status.HTTP_202_ACCEPTED,
-    content={"messsage" : "Token generated successfully", "token" : user_to_reset['_id']})
+    content={"message" : "Token generated successfully", "token" : user_to_reset['_id']})
 
 @router.post("/reset/token", status_code=status.HTTP_200_OK, response_description="Reset user password")
 async def reset_password(request: Request, credentials: user_model.UserCredentials) -> JSONResponse:

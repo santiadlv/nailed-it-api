@@ -35,3 +35,9 @@ async def validate_user(request: Request, user_login: user_model.UserLogin) -> J
     user_login = jsonable_encoder(user_login)
     validate_password = await UserService.login(request, user_login)
     return JSONResponse(status_code=status.HTTP_200_OK, content={"messsage" : "Login Succesful", "data" : validate_password})
+
+@router.delete("/delete", status_code=status.HTTP_200_OK, response_description="Delete Account")
+async def delete_account(request: Request, user_info: user_model.UserLogin) -> JSONResponse:
+    user_info = jsonable_encoder(user_info)
+    remove_account = await UserService.delete(request, user_info)
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"messsage" : "Account Deleted", "data" : remove_account})

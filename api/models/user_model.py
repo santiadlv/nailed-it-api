@@ -77,3 +77,19 @@ class UserInDB(UserBase):
     username: str = Field(...)
     hashed_password: str = Field(...)
     usr_validate = validator('username', allow_reuse=True)(check_name_not_empty)
+
+
+class UserCredentials(BaseModel):
+    token: str = Field(...)
+    new_password: str = Field(...)
+    pwd_validate = validator('new_password', allow_reuse=True)(password_strength_check)
+    class Config:
+        allow_population_by_field_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+        schema_extra = {
+            "example": {
+                "token": "654nfsiotre95043jkl",
+                "new_password": "ChangedPwd9."
+            }
+        }

@@ -25,3 +25,18 @@ class CRUDUser():
         serialized_user = jsonable_encoder(new_user)
         new_user = await request.app.mongodb[settings.MONGODB_COLLECTION].insert_one(serialized_user)
         return serialized_user
+
+    async def delete(request: Request, obj_in: user_model.UserLogin) -> Optional[user_model.UserLogin]:
+        if (result := await request.app.mongodb[settings.MONGODB_COLLECTION].find_one_and_delete({"email": obj_in['email']})) is not None:
+            serialized_user = jsonable_encoder(result)
+            return serialized_user
+        else: return None
+        
+    async def update(request: Request, credentials: user_model.UserCredentials) -> Optional[user_model.UserInDB]:
+        query = {"_id" : credentials['token']}
+        new_hashed_password = get_password_hash(credentials['new_password'])
+        update_values = { "$set" : {"hashed_password" : new_hashed_password}}
+
+        await request.app.mongodb[settings.MONGODB_COLLECTION].find_one_and_update(query, update_values)
+        updated_user = await request.app.mongodb[settings.MONGODB_COLLECTION].find_one({"_id": credentials['token']})
+        return updated_user

@@ -34,8 +34,8 @@ class UserLogin(UserBase):
     class Config:
         schema_extra = {
             "example": {
-                "username": "Tim Cook",
-                "email": "tim@apple.com"
+                "email": "tim@apple.com",
+                "password": "MyPwd123."
             }
         }
 
@@ -69,7 +69,7 @@ class UserUpdate(UserBase):
         schema_extra = {
             "example": {
                 "username": "Tim Cook",
-                "email": "tim@apple.com"
+                "password": "MyPwd123."
             }
         }
 

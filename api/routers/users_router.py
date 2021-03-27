@@ -21,7 +21,7 @@ async def get_reset_link(request: Request, user_in: user_model.UserBase) -> JSON
     user_in = jsonable_encoder(user_in)
     user_to_reset = await UserService.get_user_by_email(request, user_in)
     return JSONResponse(status_code=status.HTTP_202_ACCEPTED,
-    content={"messsage" : "Token generated successfully", "token" : user_to_reset['_id']})
+    content={"message" : "Token generated successfully", "token" : user_to_reset['_id']})
 
 @router.post("/reset/token", status_code=status.HTTP_200_OK, response_description="Reset user password")
 async def reset_password(request: Request, credentials: user_model.UserCredentials) -> JSONResponse:
@@ -39,7 +39,5 @@ async def validate_user(request: Request, user_login: user_model.UserLogin) -> J
 @router.delete("/delete", status_code=status.HTTP_200_OK, response_description="Delete Account")
 async def delete_account(request: Request, user_info: user_model.UserLogin) -> JSONResponse:
     user_info = jsonable_encoder(user_info)
-    # get_account = await UserService.get_user_by_email(request, user_info)
     remove_account = await UserService.delete(request, user_info)
-    # return remove_account
     return JSONResponse(status_code=status.HTTP_200_OK, content={"messsage" : "Account Deleted", "data" : remove_account})

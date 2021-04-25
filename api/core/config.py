@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     MONGODB_URL: str
     MONGODB_NAME: str
     MONGODB_COLLECTION: str
+    MONGODB_COLLECTION_SALONS: str
 
     class Config:
         env_file = '.env'

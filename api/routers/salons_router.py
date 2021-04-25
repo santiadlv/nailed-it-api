@@ -21,4 +21,4 @@ async def create_salon(request: Request, salon_in: salon_model.SalonBase) -> JSO
 @router.get("/", response_model=List[salon_model.SalonBase], response_description="Salons Information")
 async def get_all_salons(request: Request) -> JSONResponse:
     salons_information = await  SalonService.get_all_salons(request)
-    return JSONResponse(status_code=status.HTTP_200_OK, content=[salons_information])
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"data": salons_information})

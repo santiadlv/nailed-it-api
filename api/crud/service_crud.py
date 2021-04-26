@@ -1,7 +1,7 @@
 from typing import Optional, List
 from fastapi import Request
 from fastapi.encoders import jsonable_encoder
-from ..models import service_model
+from ..models import service_model, salon_model
 from ..core import settings
 
 class CRUDService():
@@ -18,3 +18,8 @@ class CRUDService():
         serialized_service = jsonable_encoder(new_service)
         new_service = await request.app.mongodb[settings.MONGODB_COLLECTION_SERVICES].insert_one(serialized_service)
         return serialized_service
+
+    async def get_services_by_salon_id(request: Request, salon: salon_model.SalonServices) -> Optional[List[service_model.ServiceBase]]:
+        print(salon)
+        services = await request.app.mongodb[settings.MONGODB_COLLECTION_SERVICES].find({'salon_id': salon['id']}).to_list(1000)
+        return services

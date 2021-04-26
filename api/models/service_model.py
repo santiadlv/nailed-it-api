@@ -28,4 +28,4 @@ class ServiceBase(BaseModel):
                 "salon_id": "6085df4104159a9c9c81b968"
             }
         }
-    
+        

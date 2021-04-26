@@ -20,6 +20,9 @@ class CRUDService():
         return serialized_service
 
     async def get_services_by_salon_id(request: Request, salon: salon_model.SalonServices) -> Optional[List[service_model.ServiceBase]]:
-        print(salon)
         services = await request.app.mongodb[settings.MONGODB_COLLECTION_SERVICES].find({'salon_id': salon['id']}).to_list(1000)
         return services
+
+    async def get_service_price(request: Request, service: service_model.ServiceIdentifier) -> Optional[str]:
+        price = await request.app.mongodb[settings.MONGODB_COLLECTION_SERVICES].find_one({"_id": service["id"]}, {"price":1, "_id":0})
+        return price

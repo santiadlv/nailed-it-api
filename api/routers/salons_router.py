@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, status
+from fastapi import APIRouter, Request, status, Path
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from ..models import salon_model
@@ -21,3 +21,8 @@ async def create_salon(request: Request, salon_in: salon_model.SalonBase) -> JSO
 async def get_all_salons(request: Request) -> JSONResponse:
     salons_information = await  SalonService.get_all_salons(request)
     return JSONResponse(status_code=status.HTTP_200_OK, content={"data": salons_information})
+
+@router.get("/{id}", status_code=status.HTTP_200_OK, response_description="Salon Information", response_model=salon_model.SalonBase)
+async def get_salon(request: Request, id: str = Path(..., title="The ID of the salon to get")) -> JSONResponse:
+    salon_information = await  SalonService.get_salon_by_id(request, id)
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"data": salon_information})

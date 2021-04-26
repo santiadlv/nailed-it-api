@@ -22,3 +22,12 @@ class SalonService():
                 detail="Salons not found"
             )
         return retrieved_salons
+
+    async def get_salon_by_id(request: Request, id: str) -> Optional[salon_model.SalonBase]:
+        retrieved_salon = await CRUDSalon.get_salon_by_id(request, id)
+        if not retrieved_salon:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, 
+                detail=f"Salon with ID {id} not found"
+            )
+        return retrieved_salon

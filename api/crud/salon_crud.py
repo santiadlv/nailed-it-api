@@ -19,7 +19,6 @@ class CRUDSalon():
         new_salon = await request.app.mongodb[settings.MONGODB_COLLECTION_SALONS].insert_one(serialized_salon)
         return serialized_salon
 
-    async def get_salons(request: Request) -> List[salon_model.SalonBase]:
-        
+    async def get_salons(request: Request) -> Optional[List[salon_model.SalonBase]]:
         students = await request.app.mongodb[settings.MONGODB_COLLECTION_SALONS].find().to_list(1000)
         return students

@@ -3,7 +3,6 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from ..models import salon_model
 from ..services.salon_service import SalonService
-from ..core import settings
 from typing import List
 
 router = APIRouter(
@@ -16,9 +15,9 @@ router = APIRouter(
 async def create_salon(request: Request, salon_in: salon_model.SalonBase) -> JSONResponse:
     salon_in = jsonable_encoder(salon_in)
     new_salon = await SalonService.create(request, salon_in)
-    return JSONResponse(status_code=status.HTTP_201_CREATED, content={"messsage" : "Salon added successfully", "data" : new_salon})
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content={"message" : "Salon added successfully", "data" : new_salon})
 
-@router.get("/", response_model=List[salon_model.SalonBase], response_description="Salons Information")
+@router.get("/list", status_code=status.HTTP_200_OK, response_description="List all salons", response_model=List[salon_model.SalonBase])
 async def get_all_salons(request: Request) -> JSONResponse:
     salons_information = await  SalonService.get_all_salons(request)
     return JSONResponse(status_code=status.HTTP_200_OK, content={"data": salons_information})

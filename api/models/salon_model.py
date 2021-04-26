@@ -28,3 +28,15 @@ class SalonBase(BaseModel):
             }
         }
         
+class SalonServices(BaseModel):
+    id: str = Field(...)
+
+    class Config:
+        allow_population_by_field_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+        schema_extra = {
+            "example": {
+                "id": "6085df4104159a9c9c81b968"
+            }
+        }

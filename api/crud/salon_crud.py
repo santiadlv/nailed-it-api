@@ -19,7 +19,11 @@ class CRUDSalon():
         new_salon = await request.app.mongodb[settings.MONGODB_COLLECTION_SALONS].insert_one(serialized_salon)
         return serialized_salon
 
-    async def get_salons(request: Request) -> List[salon_model.SalonBase]:
-        
+    async def get_salons(request: Request) -> Optional[List[salon_model.SalonBase]]:
         students = await request.app.mongodb[settings.MONGODB_COLLECTION_SALONS].find().to_list(1000)
         return students
+
+    async def get_salon_by_id(request: Request, id: str) -> Optional[salon_model.SalonBase]:
+        if (salon := await request.app.mongodb[settings.MONGODB_COLLECTION_SALONS].find_one({"_id": id})) is not None:
+            return salon
+        else: return None

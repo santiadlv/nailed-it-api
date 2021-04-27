@@ -15,18 +15,9 @@ def test_delete_success(test_app):
 
     response2 = test_app.delete("/users/delete", json=test_user2)
     assert response2.status_code == 200
-    assert response2.json().get('message') == "Account Deleted"
+    assert response2.json().get('messsage') == "Account Deleted"
 
 def test_delete_email_not_exists(test_app):
-    test_user = {
-        "username": "Test User",
-        "email": "test@email.com",
-        "password": "TestPassword."
-    }
-
-    response = test_app.post("/users/signup", json=test_user)
-    assert response.status_code == 201
-
     test_user = {
         "email": "notexists@email.com",
         "password": "TestPassword."

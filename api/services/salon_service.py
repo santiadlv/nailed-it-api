@@ -4,7 +4,6 @@ from ..crud.salon_crud import CRUDSalon
 from ..models import salon_model
 
 class SalonService():
-
     async def create(request: Request, salon_in: salon_model.SalonBase) -> Optional[salon_model.SalonBase]:
         salon = await CRUDSalon.create(request, salon_in)
         if not salon:

@@ -1,7 +1,5 @@
 from ..core import settings
-import asyncio
 import pytest
-import pytest_asyncio.plugin
 import nest_asyncio
 nest_asyncio.apply()
 
@@ -17,4 +15,3 @@ async def test_get_all_salons(test_app):
 
     # ASSERT THAT THE ROUTER FUNCTION RETURNS THE EXACT NUMBER OF DOCUMENTS INSIDE THE COLLETION 
     assert count == size
-

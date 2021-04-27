@@ -26,3 +26,4 @@ async def get_all_salons(request: Request) -> JSONResponse:
 async def get_salon(request: Request, id: str = Path(..., title="The ID of the salon to get")) -> JSONResponse:
     salon_information = await  SalonService.get_salon_by_id(request, id)
     return JSONResponse(status_code=status.HTTP_200_OK, content={"data": salon_information})
+    

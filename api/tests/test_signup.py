@@ -9,7 +9,7 @@ def test_signup_success(test_app):
 
     response = test_app.post("/users/signup", json=test_user)
     assert response.status_code == 201
-    assert response.json().get('message') == "User added successfully"
+    assert response.json().get('messsage') == "User added successfully"
     assert test_app.mongodb[settings.MONGODB_COLLECTION].find_one_and_delete({"email": test_user['email']}) is not None
 
 def test_signup_duplicate(test_app):

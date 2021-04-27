@@ -17,7 +17,7 @@ async def test_create_service_and_get_service_by_salon_id(test_app):
 
     first_response = test_app.post("/services/new", json=test_service)
     assert first_response.status_code == 201
-    assert first_response.json().get('messsage') == "Service added successfully"
+    assert first_response.json().get('message') == "Service added successfully"
     deleted_service = await test_app.mongodb[settings.MONGODB_COLLECTION_SERVICES].find_one_and_delete({"_id": first_response.json().get("data")["_id"]})
     assert deleted_service is not None
 

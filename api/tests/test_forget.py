@@ -28,7 +28,7 @@ def test_forget_bad_email(test_app):
 
 def test_forget_pwd_updated(test_app):
     test_user = {
-        "token": "605e67283f5b377dfe2c1143",
+        "token": "6087669ebec22e4193d6cd61",
         "new_password": "NewTestPassword1."
     }
 

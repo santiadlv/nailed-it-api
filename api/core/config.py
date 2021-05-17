@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     MONGODB_COLLECTION: str
     MONGODB_COLLECTION_SALONS: str
     MONGODB_COLLECTION_SERVICES: str
+    MONGODB_COLLECTION_HOURS: str
 
     class Config:
         env_file = '.env'

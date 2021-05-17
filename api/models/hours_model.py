@@ -42,3 +42,16 @@ class AvailabilityBase(BaseModel):
                           {"timeStart": 960, "timeEnd": 990}]
             }
         }
+
+class AvailabilityGet(BaseModel):
+    service_id: str = Field(...)
+
+    class Config:
+        allow_population_by_field_name = True
+        arbitrary_types_allowed = True
+        schema_extra = {
+            "example": {
+                "service_id": "60860830041aa13d76554242",
+            }
+        }
+        

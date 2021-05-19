@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 from .core import settings
-from .routers import users_router, salons_router, services_router, reservation_router
+from .routers import users_router, salons_router, services_router, reservation_router, hours_router
 
 app = FastAPI(title=settings.PROJECT_NAME)
 
@@ -31,3 +31,4 @@ app.include_router(router=users_router.router)
 app.include_router(router=salons_router.router)
 app.include_router(router=services_router.router)
 app.include_router(router=reservation_router.router)
+app.include_router(router=hours_router.router)

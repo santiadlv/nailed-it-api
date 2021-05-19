@@ -9,7 +9,7 @@ def check_field_not_empty(value: str) -> str:
     return value
 
 def check_valid_hour(value: int) -> int:
-    assert value in range(0, 1440), f'Time value {str(value)} is not inside acceptable range (0 - 1440)'
+    assert value in range(0, 1441), f'Time value {str(value)} is not inside acceptable range (0 - 1440)'
     return value
 
 class AvailabilityBase(BaseModel):
@@ -24,7 +24,7 @@ class AvailabilityBase(BaseModel):
         for hours in v:
             for key in hours:
                 if key != 'hour_id':
-                    assert hours[key] in range(0, 1440), f'A time value in the array ({str(hours[key])}) \
+                    assert hours[key] in range(0, 1441), f'A time value in the array ({str(hours[key])}) \
                                                            is not inside the acceptable range (0 - 1440)'
         return v
 

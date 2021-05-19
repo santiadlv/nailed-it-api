@@ -10,6 +10,7 @@ class SalonBase(BaseModel):
     imageUrl: str = Field(...)
     appointment: bool  = Field(...)
     rating: str = Field(...)
+    location: str = Field(...)
     available: bool = Field(...)
 
     class Config:
@@ -24,6 +25,7 @@ class SalonBase(BaseModel):
               "imageUrl": "https://beuhairsalon.com/wp-content/uploads/2017/09/beuhair-interior-3-min-cropped.jpg",
               "appointment": True,
               "rating": "4.2",
+              "location": "P. Sherman, 42 Wallaby Way, Sydney.",
               "available": True
             }
         }

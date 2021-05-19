@@ -25,8 +25,13 @@ class HoursService():
         retrieved_hours = await CRUDHours.retrieve(request, hours_in)
         if not retrieved_hours:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
+                status_code=status.HTTP_406_NOT_ACCEPTABLE,
                 detail=f"Availability hours for service with ID {hours_in['service_id']} could not be found"
+            )
+        elif not retrieved_hours['hours']:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"There are no available hours for service with ID {hours_in['service_id']} as of right now"
             )
         return retrieved_hours
 
@@ -35,6 +40,6 @@ class HoursService():
         if not updated_hours:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Availability hours for service with ID {hours_in['service_id']} could not be updated"
+                detail=f"Availability hours for service with ID {hours_in.service_id} could not be updated"
             )
         return updated_hours

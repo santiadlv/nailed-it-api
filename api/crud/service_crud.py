@@ -13,6 +13,7 @@ class CRUDService():
             imageUrl=obj_in['imageUrl'],
             price=obj_in['price'],
             rating=obj_in['rating'],
+            description=obj_in['description'],
             salon_id=obj_in['salon_id']
         )
         serialized_service = jsonable_encoder(new_service)

@@ -12,6 +12,7 @@ async def test_create_service_and_get_service_by_salon_id(test_app):
         "imageUrl": "https://1080motion.com/wp-content/uploads/2018/06/NoImageFound.jpg.png",
         "price": "999.99",
         "rating": "5.0",
+        "description": "Test Description",
         "salon_id": "none"
     }
 

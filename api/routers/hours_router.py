@@ -4,9 +4,10 @@ from fastapi.responses import JSONResponse
 from ..models.hours_model import AvailabilityBase, AvailabilityGet
 from ..services.hours_service import HoursService
 
+
 router = APIRouter(
     prefix="/hours",
-    tags=["hours, availability"],
+    tags=["availability hours"],
     responses={404: {"description": "Not found"}}
 )
 
@@ -24,6 +25,5 @@ async def get_hours_by_service_id(request: Request, hours_in: AvailabilityGet) -
 
 @router.post("/update", status_code=status.HTTP_200_OK, response_description="Update service's availability hours", response_model=AvailabilityBase)
 async def update_service_hours(request: Request, hours_in: AvailabilityBase) -> JSONResponse:
-    hours_in = jsonable_encoder(hours_in)
     updated_hours = await HoursService.update_availability_hours(request, hours_in)
     return JSONResponse(status_code=status.HTTP_200_OK, content={"message" : "Service's availability hours updated successfully", "data" : updated_hours})

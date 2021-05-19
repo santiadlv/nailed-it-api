@@ -13,6 +13,7 @@ class CRUDSalon():
             imageUrl=obj_in['imageUrl'],
             appointment=obj_in['appointment'],
             rating=obj_in['rating'],
+            location=obj_in['location'],
             available=obj_in['available']
         )
         serialized_salon = jsonable_encoder(new_salon)

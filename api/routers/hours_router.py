@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from ..models.hours_model import AvailabilityBase, AvailabilityGet
+from ..models.hours_model import AvailabilityAdd, AvailabilityBase, AvailabilityGet, AvailabilityRemove
 from ..services.hours_service import HoursService
 
 
@@ -27,3 +27,9 @@ async def get_hours_by_service_id(request: Request, hours_in: AvailabilityGet) -
 async def update_service_hours(request: Request, hours_in: AvailabilityBase) -> JSONResponse:
     updated_hours = await HoursService.update_availability_hours(request, hours_in)
     return JSONResponse(status_code=status.HTTP_200_OK, content={"message" : "Service's availability hours updated successfully", "data" : updated_hours})
+
+@router.post("/update/add", status_code=status.HTTP_200_OK, response_description="Add an entry to a service's availability hours", response_model=AvailabilityBase)
+async def add_service_hour(request: Request, hours_in: AvailabilityAdd) -> JSONResponse:
+    hours_in = jsonable_encoder(hours_in)
+    updated_hours = await HoursService.add_availability_hour(request, hours_in)
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"message" : "Successfully added an hour to the service's availability", "data" : updated_hours})

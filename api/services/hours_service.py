@@ -2,7 +2,7 @@ from uuid import uuid4
 from fastapi import Request, HTTPException, status
 from typing import Optional
 from ..crud.hours_crud import CRUDHours
-from ..models.hours_model import AvailabilityBase, AvailabilityGet, AvailabilityAdd
+from ..models.hours_model import AvailabilityBase, AvailabilityGet, AvailabilityAdd, AvailabilityRemove
 
 
 class HoursService():
@@ -58,6 +58,34 @@ class HoursService():
         updated_availability = AvailabilityBase(
             service_id=existing_hours['service_id'],
             hours=sorted(existing_hours['hours'], key=lambda i: i['timeStart'])
+        )
+
+        updated_hours = await CRUDHours.update(request, updated_availability)
+        if not updated_hours:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Availability hours for service with ID {hours_in['service_id']} could not be updated"
+            )
+        return updated_hours
+
+    async def remove_availability_hour(request: Request, hours_in: AvailabilityRemove) -> Optional[AvailabilityBase]:
+        existing_hours = await CRUDHours.retrieve_by_id(request, hours_in['service_id'])
+        if not existing_hours:
+            raise HTTPException(
+                status_code=status.HTTP_406_NOT_ACCEPTABLE,
+                detail=f"Availability hours for service with ID {hours_in['service_id']} could not be found"
+            )
+
+        new_hours = [i for i in existing_hours['hours'] if not (i['hour_id'] == hours_in['hour_id'])]
+        if new_hours == existing_hours['hours']:
+            raise HTTPException(
+                status_code=status.HTTP_406_NOT_ACCEPTABLE,
+                detail=f"Hour with ID {hours_in['hour_id']} could not be found in service"
+            )
+
+        updated_availability = AvailabilityBase(
+            service_id=existing_hours['service_id'],
+            hours=sorted(new_hours, key=lambda i: i['timeStart'])
         )
 
         updated_hours = await CRUDHours.update(request, updated_availability)

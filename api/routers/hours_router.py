@@ -33,3 +33,10 @@ async def add_service_hour(request: Request, hours_in: AvailabilityAdd) -> JSONR
     hours_in = jsonable_encoder(hours_in)
     updated_hours = await HoursService.add_availability_hour(request, hours_in)
     return JSONResponse(status_code=status.HTTP_200_OK, content={"message" : "Successfully added an hour to the service's availability", "data" : updated_hours})
+
+@router.post("/update/remove", status_code=status.HTTP_202_ACCEPTED, response_description="Remove an entry from a service's availability hours", response_model=AvailabilityBase)
+async def remove_service_hour(request: Request, hours_in: AvailabilityRemove) -> JSONResponse:
+    hours_in = jsonable_encoder(hours_in)
+    updated_hours = await HoursService.remove_availability_hour(request, hours_in)
+    return JSONResponse(status_code=status.HTTP_202_ACCEPTED, content={"message" : "Successfully removed an hour from the service's availability", "data" : updated_hours})
+    

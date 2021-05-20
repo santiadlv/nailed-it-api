@@ -13,7 +13,6 @@ class ReservationService():
             )
         return reservation
 
-
     async def removeAvailabilityHour(request: Request, reservation_in: reservation_model.ReservationBase) -> Optional[reservation_model.ReservationConfirm]:
         reservation = await CRUDReservation.removeAvailability(request, reservation_in)
         return reservation
@@ -36,3 +35,6 @@ class ReservationService():
             )
         return retrieved_reservation
 
+    async def addAvailabilityHour(request: Request, reservation_in: reservation_model.ReservationCancel, reservation_id: str) -> Optional[reservation_model.ReservationCancel]:
+        reservation_cancelled = await CRUDReservation.addAvailability(request, reservation_in, reservation_id)
+        return reservation_cancelled

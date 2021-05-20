@@ -3,7 +3,7 @@ from fastapi import Request
 from fastapi.encoders import jsonable_encoder
 from ..models import reservation_model
 from ..core import settings
-from ..routers import hours_router, users_router
+from ..routers import hours_router
 import datetime
 
 class CRUDReservation():
@@ -54,3 +54,21 @@ class CRUDReservation():
         if (reservation := await request.app.mongodb[settings.MONGODB_COLLECTION_RESERVATIONS].find_one({'_id': reservation_id, 'user_id': user_id})) is not None:
             return reservation
         else: return None
+
+    async def addAvailability(request: Request, obj_in: reservation_model.ReservationCancel, reservation_id: str) -> Optional[reservation_model.ReservationCancel]:
+        cancel_reservation = reservation_model.ReservationCancel(
+            service_id=obj_in["service_id"],
+            timeStart=obj_in['timeStart'],
+            timeEnd=obj_in['timeEnd']
+        )
+
+        serialized_reservation = jsonable_encoder(cancel_reservation)
+        cancel_reservation = await hours_router.add_service_hour(request, serialized_reservation)
+
+        if (result := await request.app.mongodb[settings.MONGODB_COLLECTION_RESERVATIONS].find_one_and_delete({"_id": reservation_id})) is not None:
+            serialized_user = jsonable_encoder(result)
+            return serialized_user
+        else: return None
+
+
+        

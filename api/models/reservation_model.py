@@ -67,3 +67,19 @@ class ReservationInfo(BaseModel):
               "price": "200.00"
             }
         }
+
+class ReservationCancel(BaseModel):
+    service_id: str = Field(...)
+    timeStart: int = Field(...)
+    timeEnd: int = Field(...)
+
+    class Config:
+        allow_population_by_field_name = True
+        arbitrary_types_allowed = True
+        schema_extra = {
+            "example": {
+              "service_id": "608608d7041aa13d76554244",
+              "timeStart": 480,
+              "timeEnd": 510
+            }
+        }

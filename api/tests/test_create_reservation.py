@@ -31,8 +31,15 @@ async def test_get_reservation_success(test_app):
     available_hour = await test_app.mongodb[settings.MONGODB_COLLECTION_HOURS].find_one({"service_id": "60860830041aa13d76554242", "hours": [{"hour_id": new_hour_id}]})
     assert available_hour is None
 
-    #NOT WORKING, FIX IN NEXT ISSUE
-    # delete_reservation = await test_app.mongodb[settings.MONGODB_COLLECTION_RESERVATIONS].find_one_and_delete({"_id": new_hour.json().get("data")["_id"]})
-    # assert delete_reservation is not None
+
+    # GET ALL THE RESERVATIONS FROM THE PREVIOUS USER
+    user_id = new_reservation.json().get("data")["user_id"]
+    all_reservations = test_app.get(f"/reservations/list/{user_id}")
+
+    # GET THE ID FOR THE LAST RESERVATION CREATED
+    reservation_id = all_reservations.json().get("data")[-1]["_id"]
+    # DELETE THE RESERVATION CREATED 
+    delete_reservation = await test_app.mongodb[settings.MONGODB_COLLECTION_RESERVATIONS].find_one_and_delete({"_id": reservation_id})
+    assert delete_reservation is not None
 
     

@@ -29,3 +29,8 @@ async def get_reservation(request: Request, user_id: str = Path(..., title="The 
     reservation_information = await  ReservationService.get_reservations_by_id(request, user_id, reservation_id)
     return JSONResponse(status_code=status.HTTP_200_OK, content={"data": reservation_information})
     
+@router.post("/cancel/{reservation_id}", status_code=status.HTTP_200_OK, response_description="Add the new available hour", response_model=reservation_model.ReservationCancel)
+async def cancel_reservation(request: Request, reservation_in: reservation_model.ReservationCancel, reservation_id: str = Path(..., title="The ID of the reservation")) -> JSONResponse:
+    reservation_in = jsonable_encoder(reservation_in)
+    updated_availability = await ReservationService.addAvailabilityHour(request, reservation_in, reservation_id)
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"message" : "Successfully added the availabile hour", "data" : updated_availability})

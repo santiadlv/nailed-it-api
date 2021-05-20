@@ -22,8 +22,8 @@ async def get_services_by_salon_id(request: Request, salon: salon_model.SalonSer
     service_list = await ServicesService.get_services(request, salon)
     return JSONResponse(status_code=status.HTTP_200_OK, content={"message" : "List retrieved successfully", "data" : service_list})
 
-@router.post("/price", status_code=status.HTTP_200_OK, response_description="Get service price by ID")
-async def get_service_price(request: Request, service: service_model.ServiceIdentifier) -> JSONResponse:
+@router.post("/get/id", status_code=status.HTTP_200_OK, response_description="Get service by ID")
+async def get_service_by_id(request: Request, service: service_model.ServiceIdentifier) -> JSONResponse:
     service = jsonable_encoder(service)
-    service_price = await ServicesService.get_service_price(request, service)
-    return JSONResponse(status_code=status.HTTP_200_OK, content={"message" : "Service price retrieved successfully", "data" : service_price})
+    service_price = await ServicesService.get_service_by_id(request, service)
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"message" : "Service retrieved successfully", "data" : service_price})

@@ -24,6 +24,6 @@ class CRUDService():
         services = await request.app.mongodb[settings.MONGODB_COLLECTION_SERVICES].find({'salon_id': salon['id']}).to_list(1000)
         return services
 
-    async def get_service_price(request: Request, service: service_model.ServiceIdentifier) -> Optional[str]:
-        price = await request.app.mongodb[settings.MONGODB_COLLECTION_SERVICES].find_one({"_id": service["id"]}, {"price":1, "_id":0})
-        return price
+    async def get_service_by_id(request: Request, service: service_model.ServiceIdentifier) -> Optional[service_model.ServiceBase]:
+        service = await request.app.mongodb[settings.MONGODB_COLLECTION_SERVICES].find_one({"_id": service["id"]})
+        return service

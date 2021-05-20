@@ -1,7 +1,5 @@
 from fastapi import Request, HTTPException, status
 from typing import Optional, List
-
-from starlette.status import HTTP_404_NOT_FOUND
 from ..crud.service_crud import CRUDService
 from ..models import service_model, salon_model
 
@@ -24,11 +22,11 @@ class ServicesService():
             )
         return retrieved_services
 
-    async def get_service_price(request: Request, service: service_model.ServiceIdentifier) -> Optional[str]:
-        service_price = await CRUDService.get_service_price(request, service)
-        if not service_price:
+    async def get_service_by_id(request: Request, service: service_model.ServiceIdentifier) -> Optional[service_model.ServiceBase]:
+        service = await CRUDService.get_service_by_id(request, service)
+        if not service:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail="Price for selected service not found"
+                detail="Service with provided ID could not found"
             )
-        return service_price
+        return service

@@ -1,0 +1,38 @@
+from ..core import settings
+import pytest 
+import nest_asyncio
+from fastapi import status
+nest_asyncio.apply()
+
+@pytest.mark.asyncio
+async def test_get_reservation_success(test_app):
+    test_add_hour_available = {
+        "service_id": "60860830041aa13d76554242", 
+        "timeStart": 870,
+        "timeEnd": 900
+    }
+
+    new_hour = test_app.post("/hours/update/add", json=test_add_hour_available)
+    new_hour_id = new_hour.json().get("data")["hours"][-1]["hour_id"]
+    assert new_hour.json().get("message") == "Successfully added an hour to the service's availability"
+
+    test_reservation = {
+        "user_id": "605cd9ca1ec4bf19fe3f9581",        
+        "service_id": test_add_hour_available["service_id"], 
+        "hour_id": new_hour_id,
+        "time_start": test_add_hour_available["timeStart"],
+        "time_end": test_add_hour_available["timeEnd"]
+    }
+
+    new_reservation = test_app.post("/reservations/new", json=test_reservation)
+    assert new_reservation.status_code == 201
+    assert new_reservation.json().get("message") == "Reservation added successfully"
+
+    available_hour = await test_app.mongodb[settings.MONGODB_COLLECTION_HOURS].find_one({"service_id": "60860830041aa13d76554242", "hours": [{"hour_id": new_hour_id}]})
+    assert available_hour is None
+
+    #NOT WORKING, FIX IN NEXT ISSUE
+    # delete_reservation = await test_app.mongodb[settings.MONGODB_COLLECTION_RESERVATIONS].find_one_and_delete({"_id": new_hour.json().get("data")["_id"]})
+    # assert delete_reservation is not None
+
+    

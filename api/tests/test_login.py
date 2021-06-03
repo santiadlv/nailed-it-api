@@ -22,10 +22,8 @@ def test_user_login(test_app):
         json=user_credentials
     )
     assert response.status_code == 200
-    assert response.json() == {
-        "messsage": "Login Succesful",
-        "data": True
-    }
+    assert response.json().get('messsage') == "Login Succesful"
+    assert response.json().get('data')['authentication'] == True
 
 # INCORRECT PASSWORD, BUT A VALID EMAIL IN THE SYSTEM
 def test_user_login_incorrect_password(test_app):

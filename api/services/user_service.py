@@ -45,9 +45,8 @@ class UserService():
     async def login(request: Request, user_login: user_model.UserLogin) -> Optional[user_model.UserLogin]:
         existing_user = await CRUDUser.get_by_email(request, user_login)
         if existing_user: 
-
             if security.authenticate(user_login['password'], existing_user['hashed_password']):
-                return True
+                return {"authentication" : True, "id" : existing_user['_id']} 
             else:
                 raise HTTPException(
                     status_code=401,
@@ -76,4 +75,3 @@ class UserService():
                 status_code=401,
                 detail=f"The user with email {user_info['email']} does not exists in the system."
             )
-

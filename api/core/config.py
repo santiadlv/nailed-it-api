@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     MONGODB_COLLECTION_RESERVATIONS: str
 
     MONGODB_COLLECTION_HOURS: str
+    MONGODB_COLLECTION_REVIEWS: str
 
     class Config:
         env_file = '.env'

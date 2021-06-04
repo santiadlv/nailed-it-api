@@ -27,3 +27,9 @@ async def get_service_by_id(request: Request, service: service_model.ServiceIden
     service = jsonable_encoder(service)
     service_price = await ServicesService.get_service_by_id(request, service)
     return JSONResponse(status_code=status.HTTP_200_OK, content={"message" : "Service retrieved successfully", "data" : service_price})
+
+@router.post("/filter", status_code=status.HTTP_200_OK, response_description="Get filtered services by one or more categories")
+async def get_services_by_category(request: Request, categories: service_model.ServiceCategory) -> JSONResponse:
+    categories = jsonable_encoder(categories)
+    filtered_services = await ServicesService.get_filtered_services(request, categories)
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "List of filtered services retrieved successfully", "data": filtered_services})

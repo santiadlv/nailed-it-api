@@ -52,6 +52,7 @@ class ServiceCategory(BaseModel):
 
     @validator('categories')
     def check_valid_category(cls, v):
+        assert v, "Categories list cannot be empty"
         for category in v:
             assert category in service_categories_list, f"Category '{category}' does not exist"
         return v

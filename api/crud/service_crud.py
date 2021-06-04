@@ -14,6 +14,7 @@ class CRUDService():
             price=obj_in['price'],
             rating=obj_in['rating'],
             description=obj_in['description'],
+            category=obj_in['category'],
             salon_id=obj_in['salon_id']
         )
         serialized_service = jsonable_encoder(new_service)
@@ -27,3 +28,8 @@ class CRUDService():
     async def get_service_by_id(request: Request, service: service_model.ServiceIdentifier) -> Optional[service_model.ServiceBase]:
         service = await request.app.mongodb[settings.MONGODB_COLLECTION_SERVICES].find_one({"_id": service["id"]})
         return service
+
+    async def get_services_by_category(request: Request, obj_in: service_model.ServiceCategory) -> Optional[List[service_model.ServiceBase]]:
+        filtered_services = await request.app.mongodb[settings.MONGODB_COLLECTION_SERVICES].find({"category": {"$in": obj_in["categories"]}}).to_list(1000)
+        return filtered_services
+        

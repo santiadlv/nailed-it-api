@@ -30,3 +30,12 @@ class ServicesService():
                 detail="Service with provided ID could not found"
             )
         return service
+
+    async def get_filtered_services(request: Request, categories: service_model.ServiceCategory) -> Optional[List[service_model.ServiceBase]]:
+        filtered_services = await CRUDService.get_services_by_category(request, categories)
+        if not filtered_services:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Services with specified category/categories could not be found"
+            )
+        return filtered_services

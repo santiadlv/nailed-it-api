@@ -13,6 +13,7 @@ async def test_create_service_and_get_service_by_salon_id(test_app):
         "price": "999.99",
         "rating": "5.0",
         "description": "Test Description",
+        "category": "Nails",
         "salon_id": "none"
     }
 
